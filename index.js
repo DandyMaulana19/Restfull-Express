@@ -51,6 +51,19 @@ app.get("/:id", (req, res) => {
   }
 });
 
+app.patch("/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, age } = req.body;
+  const data = datas.find((data) => data.id === id);
+  if (data) {
+    data.name = name !== undefined ? name : data.name;
+    data.age = age !== undefined ? parseInt(age) : data.age;
+    res.send(datas);
+  } else {
+    res.status(404).send("Data not found");
+  }
+});
+
 // Using Id
 // app.get("/:id", (req, res) => {
 //   const id = parseInt(req.params.id);

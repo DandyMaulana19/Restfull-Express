@@ -8,7 +8,7 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const datas = [
+let datas = [
   { id: uuidv4(), name: "John", age: 30 },
   { id: uuidv4(), name: "Jane", age: 28 },
   { id: uuidv4(), name: "Bob", age: 35 },
@@ -27,13 +27,6 @@ const datas = [
 app.get("/", (req, res) => {
   res.send({ datas });
 });
-
-// Using Id
-// app.post("/", (req, res) => {
-//   const { name, age } = req.body;
-//   datas.push({ id, name, age });
-//   res.redirect("/");
-// });
 
 app.post("/", (req, res) => {
   const { name, age } = req.body;
@@ -63,6 +56,25 @@ app.patch("/:id", (req, res) => {
     res.status(404).send("Data not found");
   }
 });
+
+app.delete("/:id", (req, res) => {
+  const { id } = req.params;
+  const data = datas.findIndex((data) => data.id === id);
+  if (data !== -1) {
+    datas.splice(data, 1);
+    res.send("Data Deleted");
+    // res.send(datas);
+  } else {
+    res.status(404).send("Data not found");
+  }
+});
+
+// Using Id
+// app.post("/", (req, res) => {
+//   const { name, age } = req.body;
+//   datas.push({ id, name, age });
+//   res.redirect("/");
+// });
 
 // Using Id
 // app.get("/:id", (req, res) => {
